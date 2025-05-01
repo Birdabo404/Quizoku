@@ -1,0 +1,10 @@
+type,question,option1,option2,option3,option4,answer
+MCQ,What is the capital of Japan?,Beijing,Seoul,Tokyo,Osaka,Tokyo
+MCQ,The star that gives life to Earth is called?,Venus,Mars,Jupiter,Saturn,Mars
+Fill,The name of the professor from class CSC is ___,,,,,Cacho
+Fill,___ Best university in mindanao.,,,,,CSU
+TrueFalse,The Great Wall of China is visible from space.,,,,,False
+TrueFalse,Python is a compiled language.,,,,,False
+MCQ,Who painted the Mona Lisa?,Van Gogh,Picasso,Da Vinci,Rembrandt,Da Vinci
+Fill,The currency of Philippine is the ___,,,,,Pesos
+TrueFalse,Light travels faster than sound.,,,,,True

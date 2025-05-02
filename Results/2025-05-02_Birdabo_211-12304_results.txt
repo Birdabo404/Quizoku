@@ -1,0 +1,58 @@
+Quiz Results
+===========
+
+Date: 2025-05-02
+Student Name: Birdabo
+Student ID: 211-12304
+
+Score: 7/9
+Percentage: 77%
+
+Question Details:
+================
+
+1. What is the capital of Japan?
+   Your Answer: Tokyo
+   Correct Answer: Tokyo
+   Result: ✓ Correct
+
+2. The star that gives life to Earth is called?
+   Your Answer: Mars
+   Correct Answer: Mars
+   Result: ✓ Correct
+
+3. The name of the professor from class CSC is ___
+   Your Answer: cacho
+   Correct Answer: Cacho
+   Result: ✓ Correct
+
+4. ___ Best university in mindanao.
+   Your Answer: csu
+   Correct Answer: CSU
+   Result: ✓ Correct
+
+5. The Great Wall of China is visible from space.
+   Your Answer: False
+   Correct Answer: False
+   Result: ✓ Correct
+
+6. Python is a compiled language.
+   Your Answer: True
+   Correct Answer: False
+   Result: ✗ Incorrect
+
+7. Who painted the Mona Lisa?
+   Your Answer: Van Gogh
+   Correct Answer: Da Vinci
+   Result: ✗ Incorrect
+
+8. The currency of Philippine is the ___
+   Your Answer: pesos
+   Correct Answer: Pesos
+   Result: ✓ Correct
+
+9. Light travels faster than sound.
+   Your Answer: True
+   Correct Answer: True
+   Result: ✓ Correct
+

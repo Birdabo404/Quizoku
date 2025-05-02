@@ -8,8 +8,10 @@ import tkinter
 from tkinter import *
 import ttkbootstrap as ttk
 from ttkbootstrap import Style, Entry, Button, Label
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
 import csv
+import datetime
+import os
 
 def quiz_sheet_Reader():
     Quizsheet = []
@@ -22,6 +24,7 @@ def quiz_sheet_Reader():
                     "text": row["question"],
                 }
                 
+                # Handle different question types
                 if row["type"] == "MCQ":
                     question["options"] = [
                         row["option1"],
@@ -67,11 +70,14 @@ def start_Quiz(student_Name, student_Id):
     current_question = 0
     score = 0
     
+    user_responses = []
+    
     # Variables to store user answers
     user_answer = tkinter.StringVar()
     entry_var = tkinter.StringVar()
 
     def show_question():
+        # Clear previous widgets to make new 
         for widget in quiz_window.winfo_children():
             widget.destroy()
         
@@ -91,7 +97,6 @@ def start_Quiz(student_Name, student_Id):
         user_answer.set("")
         entry_var.set("")
         
-        # Dynamic answer widgets
         if q["type"] == "MCQ":
             answer_frame = ttk.Frame(quiz_window)
             answer_frame.pack(pady=10)
@@ -120,6 +125,7 @@ def start_Quiz(student_Name, student_Id):
         nonlocal current_question, score
         q = questions[current_question]
         correct = False
+        selected = ""
         
         if q["type"] == "MCQ" or q["type"] == "TrueFalse":
             selected = user_answer.get()
@@ -131,11 +137,19 @@ def start_Quiz(student_Name, student_Id):
             if selected == correct_answer:
                 correct = True
         
+        user_responses.append({
+            "question": q["text"],
+            "user_answer": selected,
+            "correct_answer": q["answer"],
+            "is_correct": correct
+        })
+        
+        # Show feedback
         if correct:
             score += 1
-            messagebox.showinfo("Correct!", "Your answer is correct!")
+            messagebox.showinfo("Correct!", "Your answer is correct! ✅")
         else:
-            messagebox.showinfo("Incorrect", f"Incorrect - The correct answer is: {q['answer']}")
+            messagebox.showinfo("Incorrect", f"Incorrect ❌ The answer is: {q['answer']}")
         
         # Move to next question
         current_question += 1
@@ -145,6 +159,48 @@ def start_Quiz(student_Name, student_Id):
         else:
             show_results()  # End quiz
 
+    def save_results():
+        # Create filename with date, name and ID
+        current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+        filename = f"{current_date}_{student_Name}_{student_Id}_results.txt"
+        
+        # Remove any invalid characters from filename
+        filename = "".join(c for c in filename if c.isalnum() or c in ['_', '-', '.'])
+        
+        try:
+            # Ensure the Results directory exists
+            if not os.path.exists("Results"):
+                os.makedirs("Results")
+                
+            # Full path for the results file
+            file_path = os.path.join("Results", filename)
+            
+            # Write results to file
+            with open(file_path, "w") as file:
+                file.write(f"Quiz Results\n")
+                file.write(f"===========\n\n")
+                file.write(f"Date: {current_date}\n")
+                file.write(f"Student Name: {student_Name}\n")
+                file.write(f"Student ID: {student_Id}\n\n")
+                file.write(f"Score: {score}/{len(questions)}\n")
+                file.write(f"Percentage: {int((score/len(questions))*100)}%\n\n")
+                
+                # Add details about each question and the user's responses
+                file.write("Question Details:\n")
+                file.write("================\n\n")
+                
+                for i, response in enumerate(user_responses):
+                    file.write(f"{i+1}. {response['question']}\n")
+                    file.write(f"   Your Answer: {response['user_answer']}\n")
+                    file.write(f"   Correct Answer: {response['correct_answer']}\n")
+                    file.write(f"   Result: {'✓ Correct' if response['is_correct'] else '✗ Incorrect'}\n\n")
+            
+            messagebox.showinfo("Success", f"Results saved to:\n{file_path}")
+            return True
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save results: {e}")
+            return False
+            
     def show_results():
         for widget in quiz_window.winfo_children():
             widget.destroy()
@@ -169,13 +225,19 @@ def start_Quiz(student_Name, student_Id):
                               font=("Helvetica", 14))
         final_score.pack(pady=20)
         
+        # Add button to save results
+        ttk.Button(result_frame,
+                  text="Save Results",
+                  command=save_results,
+                  bootstyle="success").pack(pady=10)
+        
         ttk.Button(result_frame, 
                   text="Exit", 
                   command=lambda: [quiz_window.destroy(), root.deiconify()], 
                   bootstyle="danger").pack(pady=10)
 
     if questions:
-        show_question() 
+        show_question()  # Start with first question
     else:
         messagebox.showerror("Error", "No questions loaded. Exiting quiz.")
         quiz_window.destroy()
